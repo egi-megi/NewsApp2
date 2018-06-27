@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/single_list_item"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/list_item_height"
+    android:orientation="vertical"
+    android:paddingEnd="@dimen/padding_main"
+    android:paddingLeft="@dimen/padding_main"
+    android:paddingRight="@dimen/padding_main"
+    android:paddingStart="@dimen/padding_main">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="@dimen/padding_top">
+
+        <TextView
+            android:id="@+id/section_name_text_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:fontFamily="sans-serif-medium"
+            android:maxLines="1"
+            android:textAllCaps="true"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/text_section_name_title_article"
+            android:textStyle="bold"
+            tools:text="@string/section_name" />
+
+        <TextView
+            android:id="@+id/date_text_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="end"
+            android:textSize="@dimen/text_date"
+            tools:text="@string/date" />
+
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/title_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:fontFamily="sans-serif-medium"
+        android:maxLines="2"
+        android:paddingBottom="@dimen/padding_between_title_author"
+        android:textColor="@color/text_color"
+        android:textSize="@dimen/text_section_name_title_article"
+        tools:text="@string/title" />
+
+    <TextView
+        android:id="@+id/author_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:fontFamily="sans-serif-medium"
+        android:maxLines="1"
+        android:textColor="@color/text_color"
+        android:textSize="@dimen/text_author"
+        android:textStyle="italic"
+        tools:text="@string/author" />
+
+</LinearLayout>
+

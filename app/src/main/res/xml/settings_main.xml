@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:title="@string/settings_title">
+
+
+    <EditTextPreference
+        android:defaultValue="@string/settings_from_date_default"
+        android:inputType="date"
+        android:key="@string/settings_from_date_key"
+        android:selectAllOnFocus="true"
+        android:maxLength="10"
+        android:title="@string/settings_from_date_label"
+        android:background="@color/even"/>
+
+    <!--android:defaultValue="@string/settings_to_date_default"-->
+    <EditTextPreference
+        android:defaultValue="today"
+        android:inputType="date"
+        android:key="@string/settings_to_date_key"
+        android:selectAllOnFocus="true"
+        android:maxLength="10"
+        android:title="@string/settings_to_date_label"
+        android:background="@color/even"/>
+
+    <EditTextPreference
+        android:inputType="textAutoCorrect"
+        android:key="@string/settings_topic_key"
+        android:selectAllOnFocus="true"
+        android:title="@string/settings_topic_label"
+        android:text="@string/settings_topic_example"
+        android:background="@color/odd"/>
+
+    <ListPreference
+        android:defaultValue="@string/settings_language_default"
+        android:entries="@array/settings_language_labels"
+        android:entryValues="@array/settings_language_values"
+        android:key="@string/settings_language_key"
+        android:title="@string/settings_language_label" />
+
+    <ListPreference
+        android:defaultValue="@string/settings_order_by_default"
+        android:entries="@array/settings_order_by_labels"
+        android:entryValues="@array/settings_order_by_values"
+        android:key="@string/settings_order_by_key"
+        android:title="@string/settings_order_by_label" />
+
+
+
+
+</PreferenceScreen>
