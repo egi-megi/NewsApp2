@@ -24,9 +24,7 @@ import java.util.List;
 
 public class QueryUtilis {
 
-    /**
-     * Tag for the log messages
-     */
+    // Tag for the log messages
     public static final String LOG_TAG = QueryUtilis.class.getSimpleName();
 
     private QueryUtilis() {
@@ -149,7 +147,7 @@ public class QueryUtilis {
 
             JSONArray results = response.getJSONArray("results");
 
-            // looping through All Contacts
+            // looping through All Articles
             for (int i = 0; i < results.length(); i++) {
                 JSONObject art = results.getJSONObject(i);
                 String title = art.getString("webTitle");
@@ -169,7 +167,7 @@ public class QueryUtilis {
 
                 Article article = new Article(title, sectionName, publicationDate, webUrl, authorsString);
 
-                // Adding contact to contact list
+                // Adding article to articles' list
                 articles.add(article);
             }
         } catch (JSONException e) {

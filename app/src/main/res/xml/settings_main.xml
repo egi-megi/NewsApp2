@@ -9,27 +9,21 @@
         android:inputType="date"
         android:key="@string/settings_from_date_key"
         android:selectAllOnFocus="true"
-        android:maxLength="10"
-        android:title="@string/settings_from_date_label"
-        android:background="@color/even"/>
+        android:title="@string/settings_from_date_label" />
 
-    <!--android:defaultValue="@string/settings_to_date_default"-->
     <EditTextPreference
-        android:defaultValue="today"
+        android:defaultValue="@string/settings_to_date_default"
         android:inputType="date"
         android:key="@string/settings_to_date_key"
         android:selectAllOnFocus="true"
-        android:maxLength="10"
-        android:title="@string/settings_to_date_label"
-        android:background="@color/even"/>
+        android:title="@string/settings_to_date_label" />
 
     <EditTextPreference
+        android:defaultValue="@string/settings_topic_default"
         android:inputType="textAutoCorrect"
         android:key="@string/settings_topic_key"
         android:selectAllOnFocus="true"
-        android:title="@string/settings_topic_label"
-        android:text="@string/settings_topic_example"
-        android:background="@color/odd"/>
+        android:title="@string/settings_topic_label" />
 
     <ListPreference
         android:defaultValue="@string/settings_language_default"

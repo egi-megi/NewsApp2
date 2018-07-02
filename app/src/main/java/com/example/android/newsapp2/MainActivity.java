@@ -19,7 +19,6 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -45,7 +44,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         // Find a reference to the {@link ListView} in the layout
         ListView articleListView = (ListView) findViewById(R.id.list);
 
@@ -107,14 +105,23 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         // getString retrieves a String value from the preferences. The second parameter is the default value for this preference.
         String fromDate = sharedPrefs.getString(
                 getString(R.string.settings_from_date_key),
-                getString(R.string.settings_from_date_default));
-
+                todayDateString);
+        //Set today's current date for fromDate if user don't set different date
+        if ("today".equalsIgnoreCase(fromDate)){
+            fromDate=todayDateString;
+            SharedPreferences.Editor editor = sharedPrefs.edit();
+            editor.putString(getString(R.string.settings_from_date_key), fromDate);
+            editor.commit();
+        }
         String toDate = sharedPrefs.getString(
                 getString(R.string.settings_to_date_key),
                 todayDateString);
-
+        //Set today's current date for toDate if user don't set different date
         if (toDate.equalsIgnoreCase("today")) {
             toDate=todayDateString;
+            SharedPreferences.Editor editor = sharedPrefs.edit();
+            editor.putString(getString(R.string.settings_to_date_key), toDate);
+            editor.commit();
         }
 
         String topic = sharedPrefs.getString(
@@ -151,17 +158,12 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         uriBuilder.appendQueryParameter("lang", language);
         uriBuilder.appendQueryParameter("order-by", orderBy);
 
-//        if (fromDate.isEmpty()) {
-//            String fromDate = sharedPrefs.getString(
-//                    getString(R.string.settings_from_date_key),
-//                    getString(R.string.settings_from_date_default));
-//        }
-
-        // Return the completed uri `https://content.guardianapis.com/search?q=topic&from-date=fromDate&api-key=21bb4e65-d7b8-4e81-ae28-632e388ed476&show-tags=contributor
+        // Return the completed uri `https://content.guardianapis.com/search?q=topic&from-date=fromDate&to-date=toDate&api-key=test&show-tags=contributor&lang=language&order-by=orderBy
         Log.e("url",uriBuilder.toString());
         return new ArticleLoader(this, uriBuilder.toString());
     }
 
+    //Set properly format of date
     private String formatDate(Date dateObject) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         return dateFormat.format(dateObject);

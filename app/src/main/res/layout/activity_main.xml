@@ -11,8 +11,6 @@
         android:dividerHeight="0dp"
         android:orientation="vertical" />
 
-    <!-- Empty view is only visible when the list has no items. -->
-
     <ImageView
         android:id="@+id/empty_text_view"
         android:layout_width="wrap_content"

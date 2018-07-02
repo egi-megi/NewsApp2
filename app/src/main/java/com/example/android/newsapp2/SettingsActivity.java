@@ -2,8 +2,9 @@ package com.example.android.newsapp2;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.preference.EditTextPreference;
 import android.preference.SwitchPreference;
-import android.support.v4.app.DialogFragment;
+import android.app.DialogFragment;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.preference.ListPreference;
@@ -32,26 +33,49 @@ public class SettingsActivity extends AppCompatActivity {
 
 
 
-
     public static class ArticlePreferenceFragment extends PreferenceFragment implements Preference.OnPreferenceChangeListener {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.settings_main);
 
-            Preference fromDate = findPreference(getString(R.string.settings_from_date_key));
-            fromDate.setOnPreferenceClickListener(new View.OnClickListener() {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            String today=dateFormat.format(Calendar.getInstance().getTime());
+            //Set the actual today date in the beginning of operation of the app in a Preference "From date"
+            final EditTextPreference fromDate = (EditTextPreference) findPreference(getString(R.string.settings_from_date_key));
+            if (fromDate.getText().equalsIgnoreCase("today")) {
+                fromDate.setText(today);
+            }
+            //Making a calender to choose a date which is display when user click on Preference "From date"
+            fromDate.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
-                public void onClick(View v) {
-                    DialogFragment newFragment = new DatePickerFragment();
-                    newFragment.show(getSupportFragmentManager(), "datePicker");
+                public boolean onPreferenceClick(Preference preference) {
+
+                    DatePickerFragment newFragment = new DatePickerFragment();
+                    newFragment.setToSet(fromDate);
+                    newFragment.show(getFragmentManager(), "datePicker");
+                    return false;
                 }
             });
-//            showDatePickerDialog(fromDate);
             bindPreferenceSummaryToValue(fromDate);
-  //          fromDate.getView().setBackgroundColor(Color.BLUE);
 
-            Preference toDate = findPreference(getString(R.string.settings_to_date_key));
+
+            final EditTextPreference toDate = (EditTextPreference) findPreference(getString(R.string.settings_to_date_key));
+            //Set the actual today date in the beginning of operation of the app in a Preference "To date"
+            if (toDate.getText().equalsIgnoreCase("today")) {
+                toDate.setText(today);
+            }
+            //Making a calender to choose a date which is display when user click on Preference "To date"
+            toDate.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+
+                    DatePickerFragment newFragment = new DatePickerFragment();
+                    newFragment.setToSet(toDate);
+                    newFragment.show(getFragmentManager(), "datePicker");
+                    return false;
+                }
+            });
             bindPreferenceSummaryToValue(toDate);
 
             Preference topic = findPreference(getString(R.string.settings_topic_key));
@@ -67,30 +91,74 @@ public class SettingsActivity extends AppCompatActivity {
 
 
 
-        public static class DatePickerFragment extends DialogFragment
+        public static  class DatePickerFragment extends DialogFragment
                 implements DatePickerDialog.OnDateSetListener {
+
+            EditTextPreference toSet;
+
+            public Preference getToSet() {
+                return toSet;
+            }
+
+            public void setToSet(EditTextPreference toSet) {
+                this.toSet = toSet;
+            }
+
 
             @Override
             public Dialog onCreateDialog(Bundle savedInstanceState) {
+                // Downloading the current date
                 final Calendar c = Calendar.getInstance();
                 int year = c.get(Calendar.YEAR);
                 int month = c.get(Calendar.MONTH);
                 int day = c.get(Calendar.DAY_OF_MONTH);
+
+                String textToParse=toSet.getText();
+
+                int indexPausa = toSet.getText().indexOf("-");
+                // Parse the right part of the string into Integer
+                if (indexPausa==4  && toSet.getText().indexOf("-",5)==7) {
+                    year = Integer.parseInt(textToParse.substring(0, indexPausa));
+                    month = Integer.parseInt(textToParse.substring(indexPausa + 1, indexPausa + 3))-1;
+                    day = Integer.parseInt(textToParse.substring(8));
+                }
+                //Create ne object DatePickerDialog named dialog
                 DatePickerDialog dialog = new DatePickerDialog(getActivity(), this, year, month, day);
-        //        dialog.getDatePicker().setMaxDate(c.getTimeInMillis());
                 return  dialog;
             }
 
             public void onDateSet(DatePicker view, int year, int month, int day) {
-//                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                //Set properly display of date in format yyyy-mm-dd
+                if (month < 9 && day < 10) {
+                    String dob = String.valueOf(year) + "-0" + String.valueOf(month + 1) + "-0" + String.valueOf(day);
+                    toSet.setText(dob);
+                    if (toSet.getEditText() != null) {
+                        toSet.getEditText().setText(dob);
+                    }
+                    toSet.getEditText();
+                } else if (month < 9 && day > 9) {
+                        String dob = String.valueOf(year) + "-0" + String.valueOf(month + 1) + "-" + String.valueOf(day);
+                        toSet.setText(dob);
+                        if (toSet.getEditText()!=null) {
+                            toSet.getEditText().setText(dob);
+                        }
+                } else if (month > 8 && day < 10) {
+                    String dob = String.valueOf(year) + "-" + String.valueOf(month + 1) + "-0" + String.valueOf(day);
+                    toSet.setText(dob);
+                    if (toSet.getEditText()!=null) {
+                        toSet.getEditText().setText(dob);
+                    }
+                } else {
+                    String dob = String.valueOf(year) + "-" + String.valueOf(month + 1) + "-" + String.valueOf(day);
+                    toSet.setText(dob);
+                    if (toSet.getEditText()!=null) {
+                        toSet.getEditText().setText(dob);
+                    }
+                }
+
             }
         }
 
-//        public void showDatePickerDialog(View v) {
-//            DialogFragment newFragment = new DatePickerFragment();
-//            newFragment.show(getSupportFragmentManager(), "datePicker");
-//        }
 
         private void bindPreferenceSummaryToValue(Preference preference) {
             preference.setOnPreferenceChangeListener(this);
@@ -118,24 +186,4 @@ public class SettingsActivity extends AppCompatActivity {
 
     }
 
-//    public static class DatePickerFragment extends DialogFragment
-//            implements DatePickerDialog.OnDateSetListener {
-//
-//        @Override
-//        public Dialog onCreateDialog(Bundle savedInstanceState) {
-//            // Use the current date as the default date in the picker
-//            final Calendar c = Calendar.getInstance();
-//            int year = c.get(Calendar.YEAR);
-//            int month = c.get(Calendar.MONTH);
-//            int day = c.get(Calendar.DAY_OF_MONTH);
-//
-//            // Create a new instance of DatePickerDialog and return it
-//            return new DatePickerDialog(getActivity(), this, year, month, day);
-//        }
-//
-//        public void onDateSet(DatePicker view, int year, int month, int day) {
-//            // Do something with the date chosen by the user
-//            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-//        }
-//    }
 }
